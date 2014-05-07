@@ -44,6 +44,24 @@ public class MyMap <K, V> {
 	 * @param value
 	 */
 	public void put(K key, V value) {
+
+        int index = key.hashCode() % INITIAL_SIZE;
+        MyEntry newEntry= new MyEntry(key, value);
+
+        if (buckets[index].isEmpty()) {
+
+            buckets[index].add(0, newEntry);
+            numEntries++;
+        } else {
+           for (int i = 0; i< buckets[index].size(); i++) {
+               if (buckets[index].get(i).getKey().equals(newEntry.getKey())) {
+                   buckets[index].set(i,newEntry);
+                   return;
+               }
+               buckets[index].add(newEntry);
+               numEntries++;
+           }
+        }
 		expandIfNecessary();
 		
 		// TODO: Store the key.
